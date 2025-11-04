@@ -33,5 +33,15 @@ namespace Labyrinth.Crawl
         /// </summary>
         /// <returns>An inventory of the collectable items in the place reached.</returns>
         Inventory Walk();
+
+        /// <summary>
+        /// Turn the crawler 90 degrees to the right (clockwise).
+        /// </summary>
+        void TurnRight();
+
+        /// <summary>
+        /// Turn the crawler 90 degrees to the left (counter-clockwise).
+        /// </summary>
+        void TurnLeft();
     }
 }

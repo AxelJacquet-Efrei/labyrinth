@@ -26,6 +26,10 @@ namespace Labyrinth
                     return inventory;
                 });
 
+            public void TurnRight() => _direction.TurnRight();
+
+            public void TurnLeft() => _direction.TurnLeft();
+
             private bool IsOut(int pos, int dimension) =>
                 pos < 0 || pos >= _tiles.GetLength(dimension);
 
