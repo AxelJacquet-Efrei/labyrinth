@@ -15,7 +15,7 @@
         public static Direction South => new(0, 1);
         public static Direction West => new(-1, 0);
 
-        private Direction(int deltaX, int deltaY)
+        internal Direction(int deltaX, int deltaY)
         {
             DeltaX = deltaX;
             DeltaY = deltaY;

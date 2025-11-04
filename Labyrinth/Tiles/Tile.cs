@@ -13,6 +13,11 @@ namespace Labyrinth.Tiles
         public abstract bool IsTraversable { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the tile contains an item.
+        /// </summary>
+        public bool HasItem => LocalInventory.HasItem;
+
+        /// <summary>
         /// Actually pass through the tile. 
         /// </summary>
         /// <exception cref="InvalidOperationException">The tile is not traversable.</exception>

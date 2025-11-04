@@ -26,9 +26,15 @@ namespace Labyrinth
                     return inventory;
                 });
 
-            public void TurnRight() => _direction.TurnRight();
+            public void TurnRight()
+            {
+                _direction.TurnRight();
+            }
 
-            public void TurnLeft() => _direction.TurnLeft();
+            public void TurnLeft()
+            {
+                _direction.TurnLeft();
+            }
 
             private bool IsOut(int pos, int dimension) =>
                 pos < 0 || pos >= _tiles.GetLength(dimension);
@@ -50,7 +56,7 @@ namespace Labyrinth
             private int _x = x;
             private int _y = y;
 
-            private readonly Direction _direction = Direction.North;
+            private Direction _direction = new Direction(0, -1);
             private readonly Tile[,] _tiles = tiles;
         }
     }

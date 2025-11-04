@@ -7,10 +7,6 @@
 .idea/
 *.sln.iml
 
-# User-specific files
-*.rsuser
-*.suo
-*.user
 *.userosscache
 *.sln.docstates
 

@@ -30,6 +30,11 @@ namespace Labyrinth
         }
 
         /// <summary>
+        /// Labyrinth tiles grid accessible for display and crawling.
+        /// </summary>
+        public Tile[,] Tiles => _tiles;
+
+        /// <summary>
         /// Starting position in the labyrinth.
         /// </summary>
         public (int X, int Y) Start => _start;
@@ -56,17 +61,26 @@ namespace Labyrinth
             {
                 for (int x = 0; x < _tiles.GetLength(0); x++)
                 {
-                    res.Append(_tiles[x, y] switch
-                    {
-                        Room => ' ',
-                        Wall => '#',
-                        Door => '/',
-                        _ => throw new NotSupportedException("Unknown tile type")
-                    });
+                    res.Append(GetTileChar(_tiles[x, y]));
                 }
                 res.AppendLine();
             }
             return res.ToString();
+        }
+
+        /// <summary>
+        /// Get the character representation of a tile.
+        /// </summary>
+        private static char GetTileChar(Tile tile)
+        {
+            return tile switch
+            {
+                Room room => room.HasItem ? 'k' : ' ',
+                Wall => '#',
+                Door => '/',
+                Outside => ' ',
+                _ => throw new NotSupportedException("Unknown tile type")
+            };
         }
 
         /// <summary>
