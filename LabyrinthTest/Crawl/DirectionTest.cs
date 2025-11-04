@@ -5,73 +5,133 @@ namespace LabyrinthTest.Crawl;
 [TestFixture(Description = "Direction unit test class")]
 public class DirectionTest
 {
-    private static void AssertThatXY(Direction dir, int x, int y)
+    [Test]
+    public void TestInitNorth()
     {
-        using var all = Assert.EnterMultipleScope();
+        // Arrange
+        var direction = Direction.North;
 
-        Assert.That(dir.DeltaX, Is.EqualTo(x));
-        Assert.That(dir.DeltaY, Is.EqualTo(y));
+        // Act
+        var deltaX = direction.DeltaX;
+        var deltaY = direction.DeltaY;
+
+        // Assert
+        Assert.That(deltaX, Is.EqualTo(0));
+        Assert.That(deltaY, Is.EqualTo(-1));
     }
 
     [Test]
-    public void TestInitNorth() => AssertThatXY(Direction.North, 0, -1);
+    public void TestInitSouth()
+    {
+        // Arrange
+        var direction = Direction.South;
+
+        // Act
+        var deltaX = direction.DeltaX;
+        var deltaY = direction.DeltaY;
+
+        // Assert
+        Assert.That(deltaX, Is.EqualTo(0));
+        Assert.That(deltaY, Is.EqualTo(1));
+    }
 
     [Test]
-    public void TestInitSouth() => AssertThatXY(Direction.South, 0, 1);
+    public void TestInitEast()
+    {
+        // Arrange
+        var direction = Direction.East;
+
+        // Act
+        var deltaX = direction.DeltaX;
+        var deltaY = direction.DeltaY;
+
+        // Assert
+        Assert.That(deltaX, Is.EqualTo(1));
+        Assert.That(deltaY, Is.EqualTo(0));
+    }
 
     [Test]
-    public void TestInitEast() => AssertThatXY(Direction.East, 1, 0);
+    public void TestInitWest()
+    {
+        // Arrange
+        var direction = Direction.West;
 
-    [Test]
-    public void TestInitWest() => AssertThatXY(Direction.West, -1, 0);
+        // Act
+        var deltaX = direction.DeltaX;
+        var deltaY = direction.DeltaY;
+
+        // Assert
+        Assert.That(deltaX, Is.EqualTo(-1));
+        Assert.That(deltaY, Is.EqualTo(0));
+    }
 
     [Test]
     public void TestTurnRightFromNorthGoesEast()
     {
+        // Arrange
         var test = Direction.North;
 
+        // Act
         test.TurnRight();
+
+        // Assert
         Assert.That(test, Is.EqualTo(Direction.East));
     }
 
     [Test]
     public void TestTurnRightThenLeftStillTheSame()
     {
+        // Arrange
         var test = Direction.East;
 
+        // Act
         test.TurnRight();
         test.TurnLeft();
+
+        // Assert
         Assert.That(test, Is.EqualTo(Direction.East));
     }
 
     [Test]
     public void TestTurnLeftFromNorthGoesWest()
     {
+        // Arrange
         var test = Direction.North;
 
+        // Act
         test.TurnLeft();
+
+        // Assert
         Assert.That(test, Is.EqualTo(Direction.West));
     }
 
     [Test]
     public void TestTurnLeftTwiceFromWestGoesEast()
     {
+        // Arrange
         var test = Direction.West;
 
+        // Act
         test.TurnLeft();
         test.TurnLeft();
+
+        // Assert
         Assert.That(test, Is.EqualTo(Direction.East));
     }
 
     [Test]
-    public void TestTurnRightForTimesStillTheSame()
+    public void TestTurnRightFourTimesStillTheSame()
     {
+        // Arrange
         var test = Direction.East;
 
+        // Act
         test.TurnRight();
         test.TurnRight();
         test.TurnRight();
         test.TurnRight();
+
+        // Assert
         Assert.That(test, Is.EqualTo(Direction.East));
     }
 

@@ -35,7 +35,7 @@ namespace LabyrinthTest.Crawl
         public void Explorer_ReturnsFalse_WhenMaxMovesReachedWithoutExit()
         {
             // Arrange
-            var mockCrawler = new MockCrawler(new Room()); // Room, not Outside
+            var mockCrawler = new MockCrawler(new Room());
             var mockStrategy = new MockMovementStrategy();
             var explorer = new Explorer(mockCrawler, mockStrategy);
 
@@ -56,12 +56,13 @@ namespace LabyrinthTest.Crawl
             var mockCrawler = new MockCrawler(new Room());
             var mockStrategy = new MockMovementStrategy();
             var explorer = new Explorer(mockCrawler, mockStrategy);
+            const int maxMoves = 3;
 
             // Act
-            bool result = explorer.GetOut(maxMoves: 3);
+            bool result = explorer.GetOut(maxMoves);
 
             // Assert
-            Assert.That(mockStrategy.ExecuteCallCount, Is.EqualTo(3), "Strategy.Execute should be called exactly maxMoves times");
+            Assert.That(mockStrategy.ExecuteCallCount, Is.EqualTo(maxMoves), "Strategy.Execute should be called exactly maxMoves times");
             Assert.That(result, Is.False);
         }
 
@@ -75,12 +76,13 @@ namespace LabyrinthTest.Crawl
             var mockCrawler = new MockCrawler(new Room());
             var mockStrategy = new MockMovementStrategy();
             var explorer = new Explorer(mockCrawler, mockStrategy);
+            const int expectedCalls = 5;
 
             // Act
-            explorer.GetOut(maxMoves: 5);
+            explorer.GetOut(maxMoves: expectedCalls);
 
             // Assert
-            Assert.That(mockStrategy.ExecuteCallCount, Is.EqualTo(5), "Strategy.Execute should be called 5 times");
+            Assert.That(mockStrategy.ExecuteCallCount, Is.EqualTo(expectedCalls), "Strategy.Execute should be called 5 times");
         }
 
         /// <summary>
@@ -91,11 +93,12 @@ namespace LabyrinthTest.Crawl
         {
             // Arrange
             var mockCrawler = new MockCrawler(new Room());
-            var deterministicRandom = new DeterministicRandom(new[] { 1, 2, 0, 1, 2 }); // Fixed sequence
+            var deterministicRandom = new DeterministicRandom(new[] { 1, 2, 0, 1, 2 });
             var strategy = new RandomMovementStrategy(deterministicRandom);
+            const int executionCount = 5;
 
             // Act
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < executionCount; i++)
             {
                 strategy.Execute(mockCrawler);
             }
@@ -116,7 +119,6 @@ namespace LabyrinthTest.Crawl
             var mockCrawler = new MockCrawlerWithMovement();
             var mockStrategy = new MockMovementStrategyWithMovement(mockCrawler);
             var explorer = new Explorer(mockCrawler, mockStrategy);
-
             var positionChangedEvents = new List<(int X, int Y, Direction Dir)>();
             explorer.PositionChanged += (_, e) =>
             {
@@ -142,7 +144,6 @@ namespace LabyrinthTest.Crawl
             var mockCrawler = new MockCrawlerWithMovement();
             var mockStrategy = new MockMovementStrategyWithMovement(mockCrawler);
             var explorer = new Explorer(mockCrawler, mockStrategy);
-
             CrawlingEventArgs? capturedEvent = null;
             explorer.PositionChanged += (_, e) => capturedEvent = e;
 
@@ -300,12 +301,12 @@ namespace LabyrinthTest.Crawl.KeyAndDoorTests
             var labyrinth = new Labyrinth.Labyrinth(asciiMap, new AsciiParser());
             var crawler = labyrinth.NewCrawler();
             var explorer = new Explorer(crawler);
-
-            // Act - Turn left to face the key, then walk
             crawler.TurnLeft();
-            explorer.GetOut(maxMoves: 1); // One move to pick up the key
 
-            // Assert - The key should be collected (we can't directly check the bag, but we can verify behavior)
+            // Act
+            explorer.GetOut(maxMoves: 1);
+
+            // Assert
             Assert.Pass("Key collection validated through integration test");
         }
 
@@ -324,11 +325,11 @@ namespace LabyrinthTest.Crawl.KeyAndDoorTests
             var labyrinth = new Labyrinth.Labyrinth(asciiMap, new AsciiParser());
             var crawler = labyrinth.NewCrawler();
             var explorer = new Explorer(crawler);
-
-            // Act - Collect key first by turning left and walking, then navigate to door
             crawler.TurnLeft();
-            crawler.Walk(); // Collect key
+            crawler.Walk();
             crawler.TurnRight();
+
+            // Act
             explorer.GetOut(maxMoves: 10);
 
             // Assert
@@ -341,7 +342,7 @@ namespace LabyrinthTest.Crawl.KeyAndDoorTests
         [Test]
         public void Explorer_NavigatesLabyrinth_WithKeysAndDoors()
         {
-            // Arrange - Create a labyrinth with a real exit (opening to outside)
+            // Arrange
             string asciiMap = """
                 +---------+
                 |k x     / 
@@ -351,7 +352,7 @@ namespace LabyrinthTest.Crawl.KeyAndDoorTests
             var crawler = labyrinth.NewCrawler();
             var explorer = new Explorer(crawler);
 
-            // Act - Use enough moves to find the exit with random movements
+            // Act
             bool foundExit = explorer.GetOut(maxMoves: 1000);
 
             // Assert
@@ -380,7 +381,7 @@ namespace LabyrinthTest.Crawl.KeyAndDoorTests
             var crawler = labyrinth.NewCrawler();
             var explorer = new Explorer(crawler);
 
-            // Act - Give it enough moves to find the exit
+            // Act
             bool foundExit = explorer.GetOut(maxMoves: 10000);
 
             // Assert
