@@ -1,6 +1,7 @@
 ﻿using Labyrinth.Crawl;
 using Labyrinth.Items;
 using Labyrinth.Tiles;
+using Labyrinth.Build;
 
 namespace LabyrinthTest.Crawl;
 
@@ -8,7 +9,7 @@ namespace LabyrinthTest.Crawl;
 public class LabyrinthCrawlerTest
 {
     private static ICrawler NewCrawlerFor(string ascii_map) =>
-        new Labyrinth.Labyrinth(ascii_map).NewCrawler();
+        new Labyrinth.Labyrinth(ascii_map, new AsciiParser()).NewCrawler();
 
     private static void AssertThat(ICrawler test, int x, int y, Direction dir, Type facingTile)
     {
@@ -57,8 +58,7 @@ public class LabyrinthCrawlerTest
                 +--+
                 |  |
                 +--+
-                """
-            )
+                """, new AsciiParser())
         );
     #endregion
 
@@ -269,7 +269,7 @@ public class LabyrinthCrawlerTest
                 +--+
                 |xk|
                 +-/|
-                """);
+                """, new AsciiParser());
         var test = laby.NewCrawler();
 
         test.Direction.TurnRight();

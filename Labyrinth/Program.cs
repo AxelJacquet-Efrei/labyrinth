@@ -1,4 +1,6 @@
-﻿Console.WriteLine(new Labyrinth.Labyrinth("""
+﻿using Labyrinth.Build;
+
+Console.WriteLine(new Labyrinth.Labyrinth("""
     +--+--------+
     |  /        |
     |  +--+--+  |
@@ -8,4 +10,4 @@
     +  +-------/|
     |           |
     +-----------+
-    """));
+    """, new AsciiParser()));

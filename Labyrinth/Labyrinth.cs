@@ -1,5 +1,6 @@
 ﻿using Labyrinth.Crawl;
 using Labyrinth.Tiles;
+using Labyrinth.Build;
 using System.Text;
 
 namespace Labyrinth
@@ -10,11 +11,14 @@ namespace Labyrinth
         /// Labyrinth with walls, doors and collectable items.
         /// </summary>
         /// <param name="ascii_map">A multiline string with '+', '-' or '|' for walls, '/' for doors, 'k' for key locations and x for starting position.</param>
+        /// <param name="parser">The parser to use for building the labyrinth.</param>
         /// <exception cref="ArgumentException">Thrown when string argument reveals inconsistent map sizes or characters with no starting position.</exception>
         /// <exception cref="NotSupportedException">Thrown for multiple doors (resp. key locations) before key locations (resp. doors).</exception>
-        public Labyrinth(string ascii_map)
+        public Labyrinth(string ascii_map, IAsciiParser parser)
         {
-            _tiles = Build.AsciiParser.Parse(ascii_map, ref _start);
+            parser.StartPositionFound += (_, e) => _start = (e.X, e.Y);
+            _tiles = parser.Parse(ascii_map);
+            
             if (_tiles.GetLength(0) < 3 || _tiles.GetLength(1) < 3)
             {
                 throw new ArgumentException("Labyrinth must be at least 3x3");
@@ -24,6 +28,11 @@ namespace Labyrinth
                 throw new ArgumentException("Labyrinth must have at least one starting position marked with x");
             }
         }
+
+        /// <summary>
+        /// Starting position in the labyrinth.
+        /// </summary>
+        public (int X, int Y) Start => _start;
 
         /// <summary>
         /// Labyrinth width (number of columns).
